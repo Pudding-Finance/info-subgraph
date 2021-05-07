@@ -3,36 +3,16 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
-const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-const USDC_WETH_PAIR = '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc' // created 10008355
-const DAI_WETH_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11' // created block 10042267
-const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852' // created block 10093341
+const WHOO_ADDRESS = '0x3EFF9D389D13D6352bfB498BCF616EF9b1BEaC87'
+const USDT_WHOO_PAIR = '0xc755b69b0277d7c935466b41f266142d4a9d265b' // created 10008355
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let daiPair = Pair.load(DAI_WETH_PAIR) // dai is token0
-  let usdcPair = Pair.load(USDC_WETH_PAIR) // usdc is token0
-  let usdtPair = Pair.load(USDT_WETH_PAIR) // usdt is token1
+  let usdtPair = Pair.load(USDT_WHOO_PAIR) // token1
 
-  // all 3 have been created
-  if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
-    return daiPair.token0Price
-      .times(daiWeight)
-      .plus(usdcPair.token0Price.times(usdcWeight))
-      .plus(usdtPair.token1Price.times(usdtWeight))
-    // dai and USDC have been created
-  } else if (daiPair !== null && usdcPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
-    // USDC is the only pair so far
-  } else if (usdcPair !== null) {
-    return usdcPair.token0Price
+  // all 1 have been created
+  if (usdtPair !== null) {
+    return usdtPair.token0Price
   } else {
     return ZERO_BD
   }
@@ -40,22 +20,26 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
-  '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI
-  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
-  '0xdac17f958d2ee523a2206206994597c13d831ec7', // USDT
-  '0x0000000000085d4780b73119b644ae5ecd22b376', // TUSD
-  '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', // cDAI
-  '0x39aa39c021dfbae8fac545936693ac917d5e7563', // cUSDC
-  '0x86fadb80d8d2cff3c3680819e4da99c10232ba0f', // EBASE
-  '0x57ab1ec28d129707052df4df418d58a2d46d5f51', // sUSD
-  '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', // MKR
-  '0xc00e94cb662c3520282e6f5717214004a7f26888', // COMP
-  '0x514910771af9ca656af840dff83e8264ecf986ca', //LINK
-  '0x960b236a07cf122663c4303350609a66a7b288c0', //ANT
-  '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f', //SNX
-  '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e', //YFI
-  '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8' // yCurv
+  '0x3EFF9D389D13D6352bfB498BCF616EF9b1BEaC87', // WHOO
+  '0xbE8D16084841875a1f398E6C3eC00bBfcbFa571b', // PUD
+  '0xAad9654a4df6973A92C1fd3e95281F0B37960CCd', // btc
+  '0xA1588dC914e236bB5AE4208Ce3081246f7A00193', // eth
+  '0x6705b383dEF2D9f3f93bc00C5FDe402613d2D695', // bch
+  '0x13e93721DC992b3E14333dBdb48C0e7Ec55431c3', // ltc
+  '0x886dB4C7827e196ECc777eEB6a94C23c79B9467A', // doge
+  '0xA71e7ae7A5B154f1ED12476a4C54c5Ec6e3426AC', // dot
+  '0xe3f4F13ae64c1D5156d9bCff4b6a98a70fC32C57', // ksm
+  '0x2D83F0551a65466Aa4872cf25693F4c3e834f602', // eos
+  '0xfC523B7BfAb1656b36A57Ef35F9D5c738CbF1E6C', // etc
+  '0x381f6698a7f369DD729390D817A7BfeB765fB105', //atom
+  '0xcB27775227Ae21dB4De6AC3F156139300Cf70aF5', //flow
+  '0xa787254704339474A827bd1ee4772c455e3aE7F2', //bnb
+  '0xD16bAbe52980554520F6Da505dF4d1b124c815a7', //usdt
+  '0x92a0bD4584c147D1B0e8F9185dB0BDa10B05Ed7e', // usdc
+  '0x685b9D0aeecD5153a332a334A04Ce1bc7A4Bf92A', // pipi
+  '0x263e10bE808bafaD9bd62a0998a36d4e6B9fcb19',// tpt
+  '0x0bf85D3B0C9ebCC282FDe0591882d12E57E700B3',// fil
+  '0xd63F3cceef518e183e27615A7D6404d0803210Af',// ldt
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
@@ -69,7 +53,7 @@ let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
  * @todo update to be derived ETH (add stablecoin estimates)
  **/
 export function findEthPerToken(token: Token): BigDecimal {
-  if (token.id == WETH_ADDRESS) {
+  if (token.id == WHOO_ADDRESS) {
     return ONE_BD
   }
   // loop through whitelist and check if paired with any
