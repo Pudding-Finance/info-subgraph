@@ -8,11 +8,11 @@ const USDT_WHOO_PAIR = '0xc755b69b0277d7c935466b41f266142d4a9d265b' // created 1
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(USDT_WHOO_PAIR) // token1
+  let usdtPair = Pair.load(USDT_WHOO_PAIR) // usdt is token1
 
   // all 1 have been created
   if (usdtPair !== null) {
-    return usdtPair.token0Price
+    return usdtPair.token1Price
   } else {
     return ZERO_BD
   }
