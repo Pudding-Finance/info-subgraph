@@ -3,7 +3,7 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
-const WHOO_ADDRESS = '0x3EFF9D389D13D6352bfB498BCF616EF9b1BEaC87'
+const WHOO_ADDRESS = '0x3eff9d389d13d6352bfb498bcf616ef9b1beac87'
 const USDT_WHOO_PAIR = '0xc755b69b0277d7c935466b41f266142d4a9d265b' // created 10008355
 
 export function getEthPriceInUSD(): BigDecimal {
